@@ -14,9 +14,11 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
+@Profile("longCfg")
 @EnableConfigurationProperties({MsgApp1Props.class, MsgApp2Props.class})
 @Configuration
 @EnableRabbit
@@ -67,7 +69,8 @@ public class RabbitMsgConfiguration implements RabbitListenerConfigurer {
 
     @Bean
     public Queue getApp1Queue() {
-        return new Queue(msgApp1Props.getQueueName());
+        String queueName = msgApp1Props.getQueueName();
+        return new Queue(queueName);
     }
 
     @Bean
